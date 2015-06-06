@@ -63,17 +63,6 @@ app.get('/autenticacao', function(req, res) {
 
 });
 
-function forbidden() { 
-  res.status(401)
-  res.header("WWW-Authenticate", "Basic")
-
-  res.send()
-}
-
-function decode(encoded) {
-  return new Buffer(encoded, 'base64').toString('utf8');
-}
-
 app.get('/produtos', function(req, res) {
   var produtos;
   var accept = req.headers.accept;
@@ -177,6 +166,16 @@ app.use(function(req, res) {
   res.send('<HTML> Recurso não encontrado </HTML>');
 });
 
+var forbidden = function() { 
+  res.status(401)
+  res.header("WWW-Authenticate", "Basic")
+
+  res.send()
+}
+
+var decode = function(encoded) {
+  return new Buffer(encoded, 'base64').toString('utf8');
+} 
 
 //Logando request
 var logRequest = function(req) {
