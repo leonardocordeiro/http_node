@@ -16,8 +16,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 })); 
 
-
-
 //HTTP GET /
 app.get('/', function (req, res) {
   logRequest(req);
@@ -45,6 +43,36 @@ app.get('/', function (req, res) {
         ' <a href="/calcula/parcelas?valor=300&qtd=5">R$ 300 em 5 Parcelas?</a> ' + 
     '</HTML> ');
 });
+
+app.get('/autenticacao', function(req, res) {
+  var authorization = req.headers.authorization
+  if(authorization) {
+    authorization = authorization.substring(6)
+
+    var decoded = decode(authorization);
+
+    if("alura:http" === decoded) {
+      res.status(200)
+      res.send("Parabens!") 
+    } else {
+      forbidden 
+    }
+  } else {
+    forbidden()
+  }
+
+});
+
+function forbidden() { 
+  res.status(401)
+  res.header("WWW-Authenticate", "Basic")
+
+  res.send()
+}
+
+function decode(encoded) {
+  return new Buffer(encoded, 'base64').toString('utf8');
+}
 
 app.get('/produtos', function(req, res) {
   var produtos;
@@ -126,7 +154,7 @@ app.get('/codigo-http-2', function(req, res) {
 
 app.get('/codigo-http-3', function(req, res) {
   logRequest(req);
-  res.send('<HTML> O que aconteceu? </HTML>');
+  res.send('<HTML> O que aconteceu? </HTML>\n');
 });
 
 app.get('/contador', function(req, res) {
