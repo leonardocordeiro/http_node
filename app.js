@@ -44,25 +44,27 @@ app.get('/', function (req, res) {
     '</HTML> ');
 });
 
+//Para saber mais
 app.get('/autenticacao', function(req, res) {
   var authorization = req.headers.authorization
+
   if(authorization) {
     authorization = authorization.substring(6)
-
+    
     var decoded = decode(authorization);
-
     if("alura:http" === decoded) {
       res.status(200)
-      res.send("Parabens!") 
+      res.send("<html>Parabéns!</html>") 
     } else {
-      forbidden 
+      forbidden(res)
     }
   } else {
-    forbidden()
+    forbidden(res)
   }
 
 });
 
+//Content negotiation
 app.get('/produtos', function(req, res) {
   var produtos;
   var accept = req.headers.accept;
@@ -159,14 +161,14 @@ app.use(function(err, req, res, next) {
   res.status(500).send('<HTML> ' + (err.msg || 'Deu problema ao processar a requisição') + ' </HTML>');
 });
 
-
 //Tratamento de erro, codigo HTTP 404
 app.use(function(req, res) {
   res.status(404);
   res.send('<HTML> Recurso não encontrado </HTML>');
 });
 
-var forbidden = function() { 
+
+var forbidden = function(res) { 
   res.status(401)
   res.header("WWW-Authenticate", "Basic")
 
