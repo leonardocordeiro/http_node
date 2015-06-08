@@ -75,10 +75,18 @@ app.get('/produtos', function(req, res) {
                   '<nome>Livro de Java</nome>' +
                   '<preco>R$ 50,00</preco>' +
                 '</produto>' +
+                '<produto>' +
+                  '<nome>Livro de Scrum</nome>' +
+                  '<preco>R$ 40,00</preco>' +
+                '</produto>' +
+                '<produto>' +
+                  '<nome>Macbook Pro</nome>' +
+                  '<preco>R$ 6000,00</preco>' +
+                '</produto>' +                                
                '</produtos>'; 
 
     res.header('Content-Type', 'application/xml');
-  } else if(accept.search("text/html") > -1){
+  } else if(accept.search('text/html') > -1) {
     produtos = '<html>' +
                  '<table border=1>' +
                    '<tr>' +
