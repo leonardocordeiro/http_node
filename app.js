@@ -16,8 +16,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 })); 
 
-
-
 //HTTP GET /
 app.get('/', function (req, res) {
   logRequest(req);
@@ -46,6 +44,27 @@ app.get('/', function (req, res) {
     '</HTML> ');
 });
 
+//Para saber mais
+app.get('/autenticacao', function(req, res) {
+  var authorization = req.headers.authorization
+
+  if(authorization) {
+    authorization = authorization.substring(6)
+    
+    var decoded = decode(authorization);
+    if("alura:http" === decoded) {
+      res.status(200)
+      res.send("<html>Parabéns!</html>") 
+    } else {
+      forbidden(res)
+    }
+  } else {
+    forbidden(res)
+  }
+
+});
+
+//Content negotiation
 app.get('/produtos', function(req, res) {
   var produtos;
   var accept = req.headers.accept;
@@ -128,7 +147,7 @@ app.get('/codigo-http-2', function(req, res) {
 
 app.get('/codigo-http-3', function(req, res) {
   logRequest(req);
-  res.send('<HTML> O que aconteceu? </HTML>');
+  res.send('<HTML> O que aconteceu? </HTML>\n');
 });
 
 app.get('/contador', function(req, res) {
@@ -144,13 +163,23 @@ app.use(function(err, req, res, next) {
   res.status(500).send('<HTML> ' + (err.msg || 'Deu problema ao processar a requisição') + ' </HTML>');
 });
 
-
 //Tratamento de erro, codigo HTTP 404
 app.use(function(req, res) {
   res.status(404);
   res.send('<HTML> Recurso não encontrado </HTML>');
 });
 
+
+var forbidden = function(res) { 
+  res.status(401)
+  res.header("WWW-Authenticate", "Basic")
+
+  res.send()
+}
+
+var decode = function(encoded) {
+  return new Buffer(encoded, 'base64').toString('utf8');
+} 
 
 //Logando request
 var logRequest = function(req) {
