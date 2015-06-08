@@ -59,23 +59,25 @@ app.get('/produtos', function(req, res) {
                '</produtos>'; 
 
     res.header('Content-Type', 'application/xml');
-  } else {
+  } else if(accept.search("text/html") > -1){
     produtos = '<html>' +
-                   '<table border=1>' +
-                     '<tr>' +
-                       '<td>Nome</td><td>Preço</td>' +
-                     '</tr>' +
-                     '<tr>' +
-                       '<td>Livro de Java</td><td>R$ 50,00</td>' +                     
-                     '</tr>' +
-                     '<tr>' +
-                       '<td>Livro de Scrum</td><td>R$ 40,00</td>' +                     
-                     '</tr>' +
-                     '<tr>' +
-                       '<td>Macbook Pro</td><td>R$ 6000,00</td>' +                     
-                     '</tr>' +                   
-                   '</table>' +
-                 '</html>';  
+                 '<table border=1>' +
+                   '<tr>' +
+                     '<td>Nome</td><td>Preço</td>' +
+                   '</tr>' +
+                   '<tr>' +
+                     '<td>Livro de Java</td><td>R$ 50,00</td>' +                     
+                   '</tr>' +
+                   '<tr>' +
+                     '<td>Livro de Scrum</td><td>R$ 40,00</td>' +                     
+                   '</tr>' +
+                   '<tr>' +
+                     '<td>Macbook Pro</td><td>R$ 6000,00</td>' +                     
+                   '</tr>' +                   
+                 '</table>' +
+               '</html>';  
+  } else {
+    res.status(406);
   }
 
   res.send(produtos);
